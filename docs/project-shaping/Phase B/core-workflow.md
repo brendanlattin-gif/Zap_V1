@@ -2,7 +2,7 @@
 
 > Phase B draft (in progress).
 >
-> Related: [Phase A/problem-definition.md](Phase%20A/problem-definition.md) · [Phase A/product-boundaries.md](Phase%20A/product-boundaries.md) · [v1-scope.md](../v1-scope.md)
+> Related: [Phase A/problem-definition.md](Phase%20A/problem-definition.md) · [Phase A/product-boundaries.md](Phase%20A/product-boundaries.md) · [v1-scope.md](../v1-scope.md) · [prototype-slice-1.md](../prototype-slice-1.md) · [ui-philosophy.md](../ui-philosophy.md)
 
 ---
 
@@ -78,34 +78,31 @@ The dashboard intentionally remains minimal. It is not a management portal or an
 
 ## Workflow 1 — Create New Story
 
-### Template Selection
+### Setup Wizard (Story Starters)
 
 ```text
 Dashboard
     ↓
 New Story
     ↓
-Template Selection
-```
-
-The teacher chooses a template or a blank story. This provides a fast starting point while preserving flexibility.
-
-### Setup Wizard
-
-```text
-Template Selection
-    ↓
 Setup Wizard
 ```
 
-The wizard collects story setup information. Examples may include:
+> **Prototype Slice 1:** Goes directly from Dashboard → Story Starters wizard. Genre/tone selection and other pre-wizard steps are deferred — see [prototype-slice-1.md](../prototype-slice-1.md).
 
-* characters
-* setting
-* theme (optional)
-* style (optional)
-* creativity mode
-* other story inputs
+The wizard collects story setup information. Core fields:
+
+* **Characters** — who is in the story
+* **Setting** — where the story takes place
+* **Story** — plot starter / story idea (simple label for classroom use; helper copy may read *"What should this story be about?"*)
+
+Use distinct naming in implementation: the setup **Story** field (`storyStarter`) is the teacher's idea before generation; **story text** or **story beats** in the workspace are generated narrative content.
+
+**V1-later (not Slice 1):** optional theme/style, creativity mode (safe/balanced/wild).
+
+**Future — wizard AI suggestion modals:** optional overlays during setup to help teachers with character, setting, or story starter ideas (teacher-activated, similar to plot ideas pattern). Not in Slice 1.
+
+**Future — rotating field suggestions:** greyed-out placeholder text in wizard fields that cycles through example suggestions. Not in Slice 1; docs do not preclude this enhancement.
 
 The wizard is temporary. No story record exists yet.
 
@@ -118,6 +115,24 @@ Progress Lost
 ```
 
 No draft is created. No wizard state is saved.
+
+### Future — Genre / Tone Selection
+
+```text
+Dashboard
+    ↓
+New Story
+    ↓
+Genre / Tone Selection   (future — not Slice 1)
+    ↓
+Setup Wizard
+```
+
+A future **genre/tone selection** step (e.g. Adventure, Mystery, Comedy) gives the AI instructions for the general tenor, tropes, and likely direction of the story — influencing later AI suggestions in modals and plot ideas.
+
+This is **not** pre-filled wizard shortcuts. It is a genre choice that shapes AI behavior, not a template that fills in Characters, Setting, or Story.
+
+**Not in Prototype Slice 1.** No placeholder page is required; Slice 1 flows directly to the Story Starters wizard.
 
 ### Opening Scene and Draft Creation
 
@@ -140,6 +155,17 @@ Immediately after the opening scene is successfully generated, the first persist
 The Story Workspace is the heart of Zap!. This is where classroom discussion occurs.
 
 The default view prioritizes **screen real estate for the story text**. Auxiliary AI content does not appear on the main screen unless the teacher explicitly requests it.
+
+### Display (Slice 1 / mockup-aligned)
+
+Per [ui-philosophy.md](../ui-philosophy.md) and [prototype-slice-1.md](../prototype-slice-1.md):
+
+* **Compact view** on the main workspace — readable story text with room for teacher controls on the same screen.
+* **Optional full-screen modal** for large, classroom-projected reading when maximum text size is needed for the class.
+
+Both patterns preserve the story-first principle. Full V1 may refine display further; the class must always be able to read and follow the story comfortably.
+
+> **Prototype Slice 1** includes Custom Choice and Plot Ideas only. Discussion Prompts, Comprehension Questions, and End Story are deferred — see [prototype-slice-1.md](../prototype-slice-1.md).
 
 ### Layout
 
@@ -347,7 +373,9 @@ The story automatically saves:
 * after every story round
 * after every successful continuation
 
-Teachers never manually save progress.
+Teachers never manually save progress in normal use.
+
+A **visible save-state indicator** confirms persistence (e.g. "Saving…" / "Saved" on a control or status area). The teacher should never wonder whether their work was saved — especially during a live classroom session.
 
 ### Draft vs Completed States
 
