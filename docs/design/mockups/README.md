@@ -1,8 +1,8 @@
 | File | Screen |
 |------|--------|
-| zaplogo-big.png, mainbook-big.png | Landing page |
-| akimbo-tiny.png | Story Starters wizard (Characters, Setting, Story) |
-| idea-mid.png | Character suggestion modal |
-| idea-mid.png | Setting suggestion modal |
-| idea-mid.png | Story suggestion modal |
-| zaplogo-tiny.png | Story workspace / story beginning |
+| zaplogo-big.png, mainbook-big.png, bendaydots.png | Landing page |
+| akimbo-tiny.png, zaplogo-tiny.png, bendaydots.png | Story Starters wizard (Characters, Setting, Story) |
+| idea-mid.png, bendaydots.png | Character suggestion modal |
+| idea-mid.png, bendaydots.png | Setting suggestion modal |
+| idea-mid.png, bendaydots.png | Story suggestion modal |
+| zaplogo-tiny.png, bendaydots.png | Story workspace / story beginning |
