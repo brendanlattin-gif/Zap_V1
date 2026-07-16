@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+/*
+  Zap! comic / classroom visual tokens.
+  Match mockups: blue Ben Day background, cream panels, thick black borders, comic red.
+*/
+
+@theme {
+  --color-zap-sky: #7eb8d8;
+  --color-zap-sky-deep: #5a9bc4;
+  --color-zap-cream: #fdf8e1;
+  --color-zap-cream-deep: #f5edd0;
+  --color-zap-red: #e31c23;
+  --color-zap-red-deep: #b8141a;
+  --color-zap-peach: #f0b27a;
+  --color-zap-peach-soft: #f5c59a;
+  --color-zap-orange: #f0a04b;
+  --color-zap-ink: #1a1a1a;
+  --color-zap-muted: #4a4a4a;
+  --color-zap-dot-line: #a8d0e8;
+  --font-display: var(--font-fredoka), "Fredoka", system-ui, sans-serif;
+  --font-body: var(--font-nunito), "Nunito", system-ui, sans-serif;
+}
+
+@utility font-display {
+  font-family: var(--font-display);
+}
+
+@utility font-body {
+  font-family: var(--font-body);
+}
+
+@layer base {
+  html,
+  body {
+    min-height: 100%;
+  }
+
+  body {
+    margin: 0;
+    color: var(--color-zap-ink);
+    font-family: var(--font-body);
+    background-color: var(--color-zap-sky);
+    background-image: url("/assets/bendaydots.png");
+    background-repeat: repeat;
+    background-size: 280px 280px;
+  }
+
+  /* Soft brand presence on first paint */
+  @keyframes zap-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes zap-pop {
+    0% {
+      transform: scale(0.96);
+    }
+    60% {
+      transform: scale(1.03);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .animate-fade-up {
+    animation: zap-fade-up 0.55s ease-out both;
+  }
+
+  .animate-pop {
+    animation: zap-pop 0.35s ease-out both;
+  }
+}
+
+@layer components {
+  .zap-panel {
+    background-color: var(--color-zap-cream);
+    border: 3px solid var(--color-zap-ink);
+    border-radius: 1.25rem;
+  }
+
+  .zap-panel-white {
+    background-color: #ffffff;
+    border: 3px solid var(--color-zap-ink);
+    border-radius: 1.25rem;
+  }
+
+  .zap-input {
+    width: 100%;
+    border: 2px solid var(--color-zap-ink);
+    border-radius: 0.75rem;
+    background: #fff;
+    padding: 0.65rem 0.85rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-zap-ink);
+  }
+
+  .zap-input:focus {
+    outline: 3px solid color-mix(in srgb, var(--color-zap-red) 35%, transparent);
+    outline-offset: 1px;
+  }
+
+  .zap-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    border: 3px solid var(--color-zap-ink);
+    border-radius: 0.9rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.12s ease, filter 0.12s ease;
+  }
+
+  .zap-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  .zap-btn:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  .zap-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .zap-btn-primary {
+    background-color: var(--color-zap-orange);
+    color: var(--color-zap-red);
+    padding: 0.7rem 1.4rem;
+    font-size: 1.35rem;
+  }
+
+  .zap-btn-peach {
+    background-color: var(--color-zap-peach-soft);
+    color: var(--color-zap-ink);
+    padding: 0.45rem 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  .zap-btn-ghost {
+    background: transparent;
+    border-width: 0;
+    color: var(--color-zap-ink);
+    font-weight: 800;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
