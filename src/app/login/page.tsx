@@ -2,73 +2,87 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { BookMascot, ZapLogo } from "@/components/Brand";
+import { FormEvent, useEffect, useState } from "react";
+import { AuthPageShell } from "@/components/AuthPageShell";
 import { useAuth } from "@/components/providers/AuthProvider";
 
-/**
- * Shared shell for Login / Signup / Forgot Password pages.
- * Forms are visual only in Slice 1 — real Supabase auth comes later.
- */
-function AuthShell({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <main className="flex min-h-screen items-center justify-center p-4">
-      <div className="zap-panel w-full max-w-md p-6 sm:p-8 animate-fade-up">
-        <div className="mb-6 flex items-center justify-between">
-          <BookMascot size="sm" />
-          <ZapLogo size="sm" />
-        </div>
-        <h1 className="mb-5 font-display text-3xl text-zap-ink">{title}</h1>
-        {children}
-      </div>
-    </main>
-  );
-}
-
-function StubNote() {
-  return (
-    <p className="mt-4 rounded-lg bg-zap-cream-deep px-3 py-2 font-body text-xs font-semibold text-zap-muted">
-      Real email login is not wired yet. Use <strong>Enter as teacher</strong> for Slice 1.
-    </p>
-  );
-}
-
 export default function LoginPage() {
-  const { enterAsTeacher } = useAuth();
+  const { signIn, user, ready } = useAuth();
   const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
 
-  function enter() {
-    enterAsTeacher();
+  useEffect(() => {
+    if (ready && user) {
+      router.replace("/dashboard");
+    }
+  }, [ready, user, router]);
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (busy) return;
+    setBusy(true);
+    setError(null);
+    const result = await signIn(email, password);
+    if (result.error) {
+      setError(result.error);
+      setBusy(false);
+      return;
+    }
     router.push("/dashboard");
   }
 
   return (
-    <AuthShell title="Login">
-      <form
-        className="flex flex-col gap-3"
-        onSubmit={(e) => {
-          e.preventDefault();
-          enter();
-        }}
-      >
+    <AuthPageShell
+      activeNav="login"
+      title="Welcome back!"
+      subtitle="Log in to continue your classroom stories."
+    >
+      <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
         <label className="font-body text-sm font-bold">
           Email
-          <input className="zap-input mt-1" type="email" placeholder="you@school.edu" disabled />
+          <input
+            className="zap-input mt-1"
+            type="email"
+            autoComplete="email"
+            placeholder="you@school.edu"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            disabled={busy}
+          />
         </label>
         <label className="font-body text-sm font-bold">
           Password
-          <input className="zap-input mt-1" type="password" placeholder="••••••••" disabled />
+          <input
+            className="zap-input mt-1"
+            type="password"
+            autoComplete="current-password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            disabled={busy}
+          />
         </label>
-        <button type="button" className="zap-btn zap-btn-primary mt-2" onClick={enter}>
-          Enter as teacher
+
+        {error && (
+          <p className="font-body text-sm font-bold text-zap-red" role="alert">
+            {error}
+          </p>
+        )}
+
+        <button
+          type="submit"
+          className="zap-btn zap-btn-primary mt-2 self-end"
+          disabled={busy}
+        >
+          {busy ? "Logging in…" : "Log in"}
         </button>
       </form>
-      <StubNote />
+
       <div className="mt-5 flex flex-wrap gap-4 font-body text-sm font-bold">
         <Link href="/signup" className="text-zap-red underline">
           Create account
@@ -80,6 +94,6 @@ export default function LoginPage() {
           Back
         </Link>
       </div>
-    </AuthShell>
+    </AuthPageShell>
   );
 }

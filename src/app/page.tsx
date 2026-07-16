@@ -7,15 +7,18 @@ import { useAuth } from "@/components/providers/AuthProvider";
 
 /**
  * Landing page — comic hero from landing-page-mockup.png.
- * Zap! CTA = stub "enter as teacher" for Slice 1.
+ * Zap! CTA goes to signup (or dashboard if already signed in).
  */
 export default function LandingPage() {
-  const { enterAsTeacher, user, ready } = useAuth();
+  const { user, ready } = useAuth();
   const router = useRouter();
 
   function handleZap() {
-    enterAsTeacher();
-    router.push("/dashboard");
+    if (user) {
+      router.push("/dashboard");
+    } else {
+      router.push("/signup");
+    }
   }
 
   return (
@@ -52,12 +55,18 @@ export default function LandingPage() {
             </p>
 
             <div className="mt-8 flex w-full flex-col items-stretch gap-3 sm:items-end">
-              <button type="button" className="zap-btn zap-btn-primary self-end" onClick={handleZap}>
+              <button
+                type="button"
+                className="zap-btn zap-btn-primary self-end"
+                onClick={handleZap}
+                disabled={!ready}
+              >
                 Zap!
               </button>
               <p className="text-right font-body text-xs text-zap-muted">
-                Slice 1: Zap! enters you as a stub teacher
-                {ready && user ? " (you’re already signed in)" : ""}.
+                {ready && user
+                  ? "You’re signed in — Zap! opens your dashboard."
+                  : "Zap! takes you to create an account."}
               </p>
             </div>
           </div>

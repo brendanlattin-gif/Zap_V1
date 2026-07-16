@@ -48,8 +48,8 @@ export type StoryDraft = {
 /** UI save-state for the visible "Saving…" / "Saved" indicator. */
 export type SaveState = "idle" | "saving" | "saved" | "error";
 
-/** Stub auth user — will be replaced by a real Supabase user later. */
-export type StubUser = {
+/** App-facing teacher user (mapped from Supabase Auth). */
+export type AuthUser = {
   id: string;
   displayName: string;
   email: string;
