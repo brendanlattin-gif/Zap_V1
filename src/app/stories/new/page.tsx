@@ -4,13 +4,17 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { BookMascot, ZapLogo } from "@/components/Brand";
 import { RequireTeacher } from "@/components/RequireTeacher";
+import {
+  WizardIdeaModal,
+  type WizardIdeaCategory,
+} from "@/components/WizardIdeaModal";
 import { storyRepository } from "@/lib/data";
 
 const CHARACTER_SLOTS = 4;
 
 /**
  * Story Starters wizard — Characters, Setting, Story.
- * Idea buttons match the mockup visually but are disabled (coming soon).
+ * Idea buttons open AI suggestion modals (mock fallback when no API key).
  */
 function WizardContent() {
   const router = useRouter();
@@ -23,6 +27,14 @@ function WizardContent() {
   const [error, setError] = useState<string | null>(null);
   const [usedMock, setUsedMock] = useState(false);
 
+  const [ideaCategory, setIdeaCategory] = useState<WizardIdeaCategory | null>(
+    null
+  );
+  const [ideaText, setIdeaText] = useState("");
+  const [ideaLoading, setIdeaLoading] = useState(false);
+  const [ideaError, setIdeaError] = useState<string | null>(null);
+  const [ideaMock, setIdeaMock] = useState(false);
+
   function updateCharacter(index: number, value: string) {
     setCharacters((prev) => prev.map((c, i) => (i === index ? value : c)));
   }
@@ -30,6 +42,70 @@ function WizardContent() {
   const hasAtLeastOneCharacter = characters.some((c) => c.trim().length > 0);
   const canGenerate =
     hasAtLeastOneCharacter && setting.trim().length > 0 && storyStarter.trim().length > 0;
+
+  async function loadWizardIdea(category: WizardIdeaCategory) {
+    setIdeaCategory(category);
+    setIdeaLoading(true);
+    setIdeaError(null);
+    setIdeaText("");
+
+    try {
+      const response = await fetch("/api/ai/wizard-ideas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          category,
+          characters,
+          setting,
+          storyStarter,
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Could not generate an idea.");
+      }
+
+      setIdeaText(String(data.text ?? ""));
+      setIdeaMock(Boolean(data.usedMock));
+    } catch (err) {
+      setIdeaError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setIdeaLoading(false);
+    }
+  }
+
+  function closeIdeaModal() {
+    setIdeaCategory(null);
+    setIdeaText("");
+    setIdeaError(null);
+    setIdeaLoading(false);
+  }
+
+  async function handleCopyIdea() {
+    const text = ideaText.trim();
+    if (!text || !ideaCategory) return;
+
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      // Clipboard may be unavailable; still apply to the field.
+    }
+
+    if (ideaCategory === "character") {
+      setCharacters((prev) => {
+        const next = [...prev];
+        const emptyIndex = next.findIndex((c) => !c.trim());
+        const target = emptyIndex >= 0 ? emptyIndex : 0;
+        next[target] = text;
+        return next;
+      });
+    } else if (ideaCategory === "setting") {
+      setSetting(text);
+    } else {
+      setStoryStarter(text);
+    }
+  }
 
   async function handleGenerate() {
     if (!canGenerate || busy) return;
@@ -98,8 +174,9 @@ function WizardContent() {
             <button
               type="button"
               className="zap-btn zap-btn-peach"
-              disabled
-              title="Coming soon — wizard AI suggestions are not in Slice 1"
+              onClick={() => loadWizardIdea("character")}
+              disabled={busy || ideaLoading}
+              title="Get a character idea"
             >
               Idea
             </button>
@@ -121,8 +198,9 @@ function WizardContent() {
             <button
               type="button"
               className="zap-btn zap-btn-peach"
-              disabled
-              title="Coming soon — wizard AI suggestions are not in Slice 1"
+              onClick={() => loadWizardIdea("setting")}
+              disabled={busy || ideaLoading}
+              title="Get a setting idea"
             >
               Idea
             </button>
@@ -146,8 +224,9 @@ function WizardContent() {
             <button
               type="button"
               className="zap-btn zap-btn-peach"
-              disabled
-              title="Coming soon — wizard AI suggestions are not in Slice 1"
+              onClick={() => loadWizardIdea("story")}
+              disabled={busy || ideaLoading}
+              title="Get a story idea"
             >
               Idea
             </button>
@@ -163,7 +242,7 @@ function WizardContent() {
           </p>
         )}
         <p className="font-body text-xs text-zap-muted">
-          Idea buttons: coming soon (not in Slice 1). Leaving now discards wizard progress.
+          Leaving now discards wizard progress.
         </p>
         <div className="flex flex-wrap items-center gap-3">
           <button
@@ -184,6 +263,20 @@ function WizardContent() {
           </button>
         </div>
       </div>
+
+      <WizardIdeaModal
+        open={ideaCategory !== null}
+        category={ideaCategory ?? "character"}
+        loading={ideaLoading}
+        text={ideaText}
+        usedMock={ideaMock}
+        error={ideaError}
+        onClose={closeIdeaModal}
+        onCopy={handleCopyIdea}
+        onNewIdea={() => {
+          if (ideaCategory) void loadWizardIdea(ideaCategory);
+        }}
+      />
     </main>
   );
 }

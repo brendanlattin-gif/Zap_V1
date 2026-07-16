@@ -75,3 +75,56 @@ Reply as JSON only, with this shape:
 {"ideas":["...","...","..."]}
 `.trim();
 }
+
+export type WizardIdeaCategory = "character" | "setting" | "story";
+
+export function wizardIdeaPrompt(
+  category: WizardIdeaCategory,
+  setup: Partial<StorySetup>
+): string {
+  const characters = Array.isArray(setup.characters)
+    ? setup.characters.map((c) => c.trim()).filter(Boolean)
+    : [];
+  const setting = String(setup.setting ?? "").trim();
+  const storyStarter = String(setup.storyStarter ?? "").trim();
+
+  const contextLines = [
+    characters.length ? `Existing characters: ${characters.join(", ")}` : null,
+    setting ? `Setting so far: ${setting}` : null,
+    storyStarter ? `Story idea so far: ${storyStarter}` : null,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  const contextBlock = contextLines
+    ? `\nContext from the wizard (use for coherence; do not repeat existing characters):\n${contextLines}\n`
+    : "\n";
+
+  if (category === "character") {
+    return `
+You help an ESL teacher of ages 6–8 brainstorm a story character.
+${contextBlock}
+Suggest ONE new character name or short description suitable for a classroom story.
+Keep it playful, simple vocabulary, and one short phrase (e.g. "Officer Barnaby" or "a shy fox who loves maps").
+Do not number the answer. Reply with only the character suggestion text.
+`.trim();
+  }
+
+  if (category === "setting") {
+    return `
+You help an ESL teacher of ages 6–8 brainstorm a story setting.
+${contextBlock}
+Suggest ONE place/setting description suitable for a classroom story.
+Keep it vivid but simple, one short phrase or sentence (e.g. "Sunnyville Zoo on a windy Tuesday").
+Do not number the answer. Reply with only the setting suggestion text.
+`.trim();
+  }
+
+  return `
+You help an ESL teacher of ages 6–8 brainstorm a story idea (plot starter).
+${contextBlock}
+Suggest ONE short story premise suitable for a classroom story.
+Keep it playful and clear, one short sentence (e.g. "A lost map appears and the class must help find the treasure").
+Do not number the answer. Reply with only the story suggestion text.
+`.trim();
+}

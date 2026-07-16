@@ -4,11 +4,18 @@
  */
 
 import OpenAI from "openai";
-import { mockContinueScene, mockOpeningScene, mockPlotIdeas } from "@/lib/ai/mock";
+import {
+  mockContinueScene,
+  mockOpeningScene,
+  mockPlotIdeas,
+  mockWizardIdea,
+} from "@/lib/ai/mock";
 import {
   continueScenePrompt,
   openingScenePrompt,
   plotIdeasPrompt,
+  wizardIdeaPrompt,
+  type WizardIdeaCategory,
 } from "@/lib/ai/prompts";
 import type { StorySetup } from "@/lib/types";
 
@@ -88,4 +95,17 @@ export async function generatePlotIdeas(args: {
 
 function stripCodeFence(text: string): string {
   return text.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
+}
+
+export async function generateWizardIdea(args: {
+  category: WizardIdeaCategory;
+  setup: Partial<StorySetup>;
+}): Promise<{ text: string; usedMock: boolean }> {
+  try {
+    const text = await chatText(SYSTEM, wizardIdeaPrompt(args.category, args.setup));
+    if (text) return { text, usedMock: false };
+  } catch (error) {
+    console.error("OpenAI wizard idea failed; using mock.", error);
+  }
+  return { text: mockWizardIdea(args.category), usedMock: true };
 }
