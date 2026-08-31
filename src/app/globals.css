@@ -18,16 +18,8 @@
   --color-zap-ink: #1a1a1a;
   --color-zap-muted: #4a4a4a;
   --color-zap-dot-line: #a8d0e8;
-  --font-display: var(--font-fredoka), "Fredoka", system-ui, sans-serif;
-  --font-body: var(--font-nunito), "Nunito", system-ui, sans-serif;
-}
-
-@utility font-display {
-  font-family: var(--font-display);
-}
-
-@utility font-body {
-  font-family: var(--font-body);
+  --font-display: var(--font-figtree), "Figtree", system-ui, sans-serif;
+  --font-body: var(--font-roboto-serif), "Roboto Serif", Georgia, serif;
 }
 
 @layer base {

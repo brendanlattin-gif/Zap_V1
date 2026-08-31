@@ -8,6 +8,7 @@ import { RequireTeacher } from "@/components/RequireTeacher";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { storyRepository } from "@/lib/data";
 import type { StoryDraft } from "@/lib/types";
+import Image from "next/image";
 
 function DashboardContent() {
   const { user, signOut } = useAuth();
@@ -29,40 +30,51 @@ function DashboardContent() {
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-4xl flex-col gap-6 p-4 sm:p-8">
-      <header className="zap-panel flex flex-wrap items-center justify-between gap-4 px-4 py-3 sm:px-6">
-        <div className="flex items-center gap-3">
-          <BookMascot size="sm" />
-          <div>
-            <p className="font-display text-xl text-zap-ink">Dashboard</p>
-            <p className="font-body text-sm text-zap-muted">
-              Hi, {user?.displayName ?? "Teacher"}
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-4">
-          <ZapLogo size="sm" href="/dashboard" />
-          <button
-            type="button"
-            className="font-body text-sm font-bold text-zap-muted underline"
-            onClick={handleSignOut}
-          >
-            Sign out
-          </button>
-        </div>
-      </header>
+     <header className="zap-panel flex items-end justify-between gap-4 px-4 py-3 sm:px-6">
+  <div className="flex items-end gap-3">
+    <BookMascot size="sm" />
+    <p className="font-body text-sm text-zap-muted">
+      Hi, {user?.displayName ?? "Teacher"}
+    </p>
+  </div>
+
+  <div className="flex h-[72px] w-28 flex-col items-center justify-between">
+    <Link
+      href="/dashboard"
+      className="flex min-h-0 flex-1 w-full items-center justify-center"
+      aria-label="Zap! home"
+    >
+      <Image
+        src="/brand/zaplogo-tiny.png"
+        alt="Zap!"
+        width={120}
+        height={66}
+        className="max-h-full max-w-full object-contain"
+      />
+    </Link>
+    <button
+      type="button"
+      className="shrink-0 font-body text-sm font-bold text-zap-muted hover:text-zap-red"
+      onClick={handleSignOut}
+    >
+      Sign out
+    </button>
+  </div>
+</header>
 
       <section className="zap-panel p-6 animate-fade-up">
-        <h1 className="font-display text-3xl text-zap-red">Let’s write a story!</h1>
-        <p className="mt-2 max-w-xl font-body text-base font-semibold text-zap-muted">
-          Start a new classroom story, or resume a draft where you left off.
-        </p>
-        <Link href="/stories/new" className="zap-btn zap-btn-primary mt-6 inline-flex">
-          Create New Story
-        </Link>
-      </section>
-
-      <section className="zap-panel p-6">
-        <h2 className="font-display text-2xl text-zap-ink">Saved drafts</h2>
+  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <h1 className="font-display text-3xl font-extrabold text-zap-red sm:text-4xl">
+      Let’s write a story!
+    </h1>
+    <Link
+      href="/stories/new"
+      className="zap-btn zap-btn-primary inline-flex shrink-0 self-start sm:self-auto"
+    >
+      New Story
+    </Link>
+  </div>
+        <h2 className="font-display text-2xl text-zap-ink mt-3">Saved drafts</h2>
         {!loaded && <p className="mt-3 font-body text-zap-muted">Loading drafts…</p>}
         {loaded && drafts.length === 0 && (
           <p className="mt-3 font-body text-zap-muted">
@@ -70,24 +82,23 @@ function DashboardContent() {
           </p>
         )}
         {drafts.length > 0 && (
-          <ul className="mt-4 flex flex-col gap-3">
-            {drafts.map((draft) => (
-              <li key={draft.id}>
-                <Link
-                  href={`/stories/${draft.id}`}
-                  className="zap-panel-white flex flex-col gap-1 px-4 py-3 transition hover:bg-white sm:flex-row sm:items-center sm:justify-between"
-                >
-                  <div>
-                    <p className="font-body text-lg font-extrabold text-zap-ink">{draft.title}</p>
-                    <p className="font-body text-sm text-zap-muted">
-                      Updated {new Date(draft.updated_at).toLocaleString()}
-                    </p>
-                  </div>
-                  <span className="font-display text-zap-red">Resume →</span>
+          <ul className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+          {drafts.map((draft) => (
+            <li key={draft.id}>
+              <Link
+                href={`/stories/${draft.id}`}
+                className="zap-panel-white flex aspect-[4/3] flex-col justify-between p-3 transition hover:bg-white"
+              >
+                  <p className="font-display text-sm font-bold leading-snug text-zap-ink line-clamp-2">
+                    {draft.title}
+                  </p>
+                  <p className="font-body text-xs text-zap-muted">
+                    {new Date(draft.updated_at).toLocaleDateString()}
+                  </p>
                 </Link>
               </li>
             ))}
-          </ul>
+        </ul>
         )}
       </section>
     </main>

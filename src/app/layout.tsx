@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { Fredoka, Nunito } from "next/font/google";
+import { Figtree, Roboto_Serif } from "next/font/google";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import "./globals.css";
 
-const fredoka = Fredoka({
+const figtree = Figtree({
   subsets: ["latin"],
-  variable: "--font-fredoka",
-  weight: ["500", "600", "700"],
+  variable: "--font-figtree",
+  weight: ["500", "600", "700", "800"],
 });
 
-const nunito = Nunito({
+const robotoSerif = Roboto_Serif({
   subsets: ["latin"],
-  variable: "--font-nunito",
+  variable: "--font-roboto-serif",
   weight: ["400", "600", "700", "800"],
 });
 
@@ -26,8 +26,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${fredoka.variable} ${nunito.variable} antialiased`}>
+    <html lang="en" className={`${figtree.variable} ${robotoSerif.variable}`}>
+      <body className="antialiased">
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

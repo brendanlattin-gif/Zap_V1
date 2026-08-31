@@ -25,7 +25,7 @@ Reuse the landing composition from [`src/app/page.tsx`](../../src/app/page.tsx):
 - Header: Zap! logo + “Story Gen” left; nav links right (Login / Signup, highlight current)
 - Two-column body on desktop: book mascot left, form right
 - Primary CTA: peach/orange `zap-btn-primary` with red label (“Log in” / “Sign up”)
-- Thick black borders, Fredoka/Nunito — same tokens as landing
+- Thick black borders, Figtree/Roboto Serif — same tokens as landing
 
 Shared shell:
 

@@ -6,6 +6,7 @@
  */
 
 import type { CreateDraftInput, StoryRepository } from "@/lib/data/story-repository";
+import { resolveStoryTitle } from "@/lib/story/title";
 import type { StoryBeat, StoryDraft } from "@/lib/types";
 
 const STORAGE_KEY = "zap.storyDrafts.v1";
@@ -30,14 +31,6 @@ function makeId(): string {
   return `story_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
 }
 
-/** Build a short title from the story starter (or a fallback). */
-function deriveTitle(storyStarter: string, openingScene: string): string {
-  const source = storyStarter.trim() || openingScene.trim();
-  if (!source) return "Untitled story";
-  const firstLine = source.split(/\n/)[0].trim();
-  return firstLine.length > 48 ? `${firstLine.slice(0, 45)}…` : firstLine;
-}
-
 export class LocalStoryRepository implements StoryRepository {
   async listDrafts(): Promise<StoryDraft[]> {
     return readAll().sort(
@@ -58,10 +51,12 @@ export class LocalStoryRepository implements StoryRepository {
       createdAt: now,
     };
 
+    const characters = input.characters.filter((c) => c.trim().length > 0);
+
     const draft: StoryDraft = {
       id: makeId(),
-      title: input.title?.trim() || deriveTitle(input.storyStarter, input.openingScene),
-      characters: input.characters.filter((c) => c.trim().length > 0),
+      title: resolveStoryTitle(input.title, characters),
+      characters,
       setting: input.setting.trim(),
       storyStarter: input.storyStarter.trim(),
       openingScene: input.openingScene,

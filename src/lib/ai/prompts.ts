@@ -21,13 +21,24 @@ export function openingScenePrompt(setup: StorySetup): string {
   return `
 ${CLASSROOM_GUIDANCE}
 
-Write the OPENING scene of a classroom story.
+Write the OPENING scene of a classroom story, and a short story TITLE for a dashboard card.
 
 Characters: ${formatCharacters(setup.characters)}
 Setting: ${setup.setting.trim() || "a magical classroom"}
 Story idea: ${setup.storyStarter.trim() || "an unexpected adventure begins"}
 
-Start the story in a vivid, welcoming way. End at a moment that invites the class to wonder what happens next — but do not list options.
+Title rules:
+- Classroom-friendly for ESL ages 6–8
+- Very short (about 3–6 short words, under ~36 characters) so it fits on one narrow card line
+- Prefer a memorable name using a character or key image (e.g. "The Lazy Grasshopper", "Barnaby's Map")
+- Not a full sentence or plot summary
+
+Scene rules:
+- Start in a vivid, welcoming way
+- End at a moment that invites the class to wonder what happens next — but do not list options
+
+Reply as JSON only, with this shape:
+{"title":"...","text":"..."}
 `.trim();
 }
 

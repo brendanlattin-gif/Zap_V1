@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ZapLogo } from "@/components/Brand";
 import { FullScreenReader } from "@/components/FullScreenReader";
 import { PlotIdeasOverlay } from "@/components/PlotIdeasOverlay";
@@ -11,6 +11,7 @@ import { SaveIndicator } from "@/components/SaveIndicator";
 import { SoftProgressDots } from "@/components/SoftProgressDots";
 import { storyRepository } from "@/lib/data";
 import { appendContinuation, softRoundIndex } from "@/lib/story/engine";
+import { normalizeStoryTitle, TITLE_MAX_LENGTH } from "@/lib/story/title";
 import type { SaveState, StoryDraft } from "@/lib/types";
 
 /**
@@ -34,6 +35,9 @@ function WorkspaceContent() {
   const [plotIdeas, setPlotIdeas] = useState<string[]>([]);
   const [plotMock, setPlotMock] = useState(false);
   const [plotError, setPlotError] = useState<string | null>(null);
+  const [editingTitle, setEditingTitle] = useState(false);
+  const [titleDraft, setTitleDraft] = useState("");
+  const ignoreTitleBlur = useRef(false);
 
   useEffect(() => {
     if (!storyId) return;
@@ -98,6 +102,24 @@ function WorkspaceContent() {
       setError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
       setBusy(false);
+    }
+  }
+
+  function startEditTitle() {
+    if (!draft) return;
+    setTitleDraft(draft.title);
+    setEditingTitle(true);
+  }
+
+  async function saveTitle() {
+    if (!draft) return;
+    const nextTitle = normalizeStoryTitle(titleDraft) || draft.title;
+    setEditingTitle(false);
+    if (nextTitle === draft.title) return;
+    try {
+      await persist({ ...draft, title: nextTitle });
+    } catch {
+      setError("Could not save the title.");
     }
   }
 
@@ -175,6 +197,64 @@ function WorkspaceContent() {
             </Link>
           </div>
         </header>
+
+        {editingTitle ? (
+          <input
+            className="zap-input font-display text-xl font-bold text-zap-ink sm:text-2xl"
+            value={titleDraft}
+            onChange={(e) => setTitleDraft(e.target.value)}
+            onBlur={() => {
+              if (ignoreTitleBlur.current) {
+                ignoreTitleBlur.current = false;
+                return;
+              }
+              void saveTitle();
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                e.currentTarget.blur();
+              }
+              if (e.key === "Escape") {
+                e.preventDefault();
+                ignoreTitleBlur.current = true;
+                setEditingTitle(false);
+              }
+            }}
+            maxLength={TITLE_MAX_LENGTH}
+            aria-label="Story title"
+            autoFocus
+            disabled={busy}
+          />
+        ) : (
+          <div className="flex items-start gap-3">
+            <h1 className="min-w-0 flex-1 font-display text-xl font-bold leading-snug text-zap-ink sm:text-2xl">
+              {draft.title}
+            </h1>
+            <button
+              type="button"
+              className="mt-1 shrink-0 rounded-lg p-1 text-zap-muted transition hover:bg-zap-cream-deep hover:text-zap-ink"
+              onClick={startEditTitle}
+              aria-label="Rename story"
+              disabled={busy}
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+              </svg>
+            </button>
+          </div>
+        )}
 
         <article className="zap-panel-white max-h-[42vh] flex-1 overflow-y-auto p-4 sm:p-5">
           <p className="whitespace-pre-wrap font-body text-lg leading-relaxed text-zap-ink sm:text-xl">

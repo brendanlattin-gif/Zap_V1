@@ -46,15 +46,30 @@ const SYSTEM =
 
 export async function generateOpeningScene(setup: StorySetup): Promise<{
   text: string;
+  title: string;
   usedMock: boolean;
 }> {
   try {
-    const text = await chatText(SYSTEM, openingScenePrompt(setup));
-    if (text) return { text, usedMock: false };
+    const raw = await chatText(
+      `${SYSTEM} Always reply with valid JSON only.`,
+      openingScenePrompt(setup)
+    );
+    if (raw) {
+      const parsed = JSON.parse(stripCodeFence(raw)) as {
+        title?: unknown;
+        text?: unknown;
+      };
+      const text = typeof parsed.text === "string" ? parsed.text.trim() : "";
+      const title = typeof parsed.title === "string" ? parsed.title.trim() : "";
+      if (text) {
+        return { text, title, usedMock: false };
+      }
+    }
   } catch (error) {
     console.error("OpenAI opening scene failed; using mock.", error);
   }
-  return { text: mockOpeningScene(setup), usedMock: true };
+  const mock = mockOpeningScene(setup);
+  return { text: mock.text, title: mock.title, usedMock: true };
 }
 
 export async function generateContinuation(args: {

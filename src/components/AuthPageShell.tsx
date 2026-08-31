@@ -24,11 +24,11 @@ export function AuthPageShell({
         <header className="mb-6 flex items-start justify-between gap-4 sm:mb-10">
           <div>
             <ZapLogo size="lg" href="/" />
-            <p className="mt-1 font-body text-sm font-extrabold tracking-wide text-zap-ink">
+            <p className="mt-1 font-display text-sm font-extrabold tracking-wide text-zap-ink">
               Story Gen
             </p>
           </div>
-          <nav className="flex gap-4 font-body text-base font-extrabold sm:gap-6 sm:text-lg">
+          <nav className="flex gap-4 font-display text-base font-extrabold sm:gap-6 sm:text-lg">
             <Link
               href="/login"
               className={
@@ -57,7 +57,7 @@ export function AuthPageShell({
           </div>
 
           <div className="flex w-full flex-col items-stretch">
-            <h1 className="font-display text-3xl leading-tight text-zap-red sm:text-4xl">
+            <h1 className="font-display text-3xl font-bold leading-tight text-zap-red sm:text-4xl">
               {title}
             </h1>
             {subtitle && (

@@ -4,22 +4,29 @@
  */
 
 import { formatCharacters, type WizardIdeaCategory } from "@/lib/ai/prompts";
+import { fallbackTitleFromCharacters } from "@/lib/story/title";
 import type { StorySetup } from "@/lib/types";
 
 const MOCK_BANNER = "[Mock AI — add OPENAI_API_KEY to .env.local for real generation]";
 
-export function mockOpeningScene(setup: StorySetup): string {
+export function mockOpeningScene(setup: StorySetup): {
+  text: string;
+  title: string;
+} {
   const who = formatCharacters(setup.characters);
   const where = setup.setting.trim() || "a sunny schoolyard";
   const idea = setup.storyStarter.trim() || "something surprising is about to happen";
 
-  return `${MOCK_BANNER}
+  return {
+    title: fallbackTitleFromCharacters(setup.characters),
+    text: `${MOCK_BANNER}
 
 On a bright morning in ${where}, ${who} gathered together.
 
 "${idea.charAt(0).toUpperCase()}${idea.slice(1)}" someone whispered.
 
-A soft breeze stirred the leaves. The air felt full of possibility. Everyone leaned in, waiting to see what would happen next.`;
+A soft breeze stirred the leaves. The air felt full of possibility. Everyone leaned in, waiting to see what would happen next.`,
+  };
 }
 
 export function mockContinueScene(direction: string): string {

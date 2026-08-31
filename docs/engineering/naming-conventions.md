@@ -50,7 +50,7 @@ Defined in `src/app/globals.css`:
 |---------|----------|
 | Panel / input / button classes | `zap-panel`, `zap-panel-white`, `zap-input`, `zap-btn`, `zap-btn-primary`, `zap-btn-peach` |
 | Color utilities | `text-zap-ink`, `bg-zap-cream`, `text-zap-red`, `zap-peach`, `zap-sky` |
-| Fonts | `font-display` (Fredoka), `font-body` (Nunito) |
+| Fonts | `font-display` (Figtree), `font-body` (Roboto Serif) |
 | Animations | `animate-fade-up`, `animate-pop` |
 
 Prefer these over one-off colors when matching the comic classroom look.

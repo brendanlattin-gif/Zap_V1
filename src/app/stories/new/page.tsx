@@ -136,6 +136,7 @@ function WizardContent() {
         setting,
         storyStarter,
         openingScene: String(data.text),
+        title: typeof data.title === "string" ? data.title : undefined,
       });
 
       router.push(`/stories/${draft.id}`);
@@ -234,16 +235,17 @@ function WizardContent() {
         </section>
       </div>
 
-      <div className="flex flex-col items-end gap-2">
-        {error && <p className="font-body text-sm font-bold text-zap-red">{error}</p>}
-        {usedMock && (
-          <p className="font-body text-xs text-zap-muted">
-            Using mock AI (add OPENAI_API_KEY later for real generation).
-          </p>
-        )}
-        <p className="font-body text-xs text-zap-muted">
-          Leaving now discards wizard progress.
-        </p>
+      <div className="zap-panel flex flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+      <div className="flex flex-col gap-1">
+            {error && (
+              <p className="font-body text-sm font-bold text-zap-red">{error}</p>
+            )}
+            {usedMock && (
+              <p className="font-body text-xs text-zap-muted">
+                Using mock AI (add OPENAI_API_KEY later for real generation).
+              </p>
+            )}
+          </div>
         <div className="flex flex-wrap items-center gap-3">
           <button
             type="button"
