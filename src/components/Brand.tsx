@@ -6,10 +6,10 @@ export function ZapLogo({
   size = "md",
   href = "/",
 }: {
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
   href?: string | null;
 }) {
-  const dims = size === "lg" ? 120 : size === "sm" ? 64 : 88;
+  const dims = size === "xl" ? 210 : size === "lg" ? 120 : size === "sm" ? 64 : 96;
   const image = (
     <Image
       src="/brand/zaplogo-tiny.png"

@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/providers/AuthProvider";
+import { TeacherAppShell } from "@/components/TeacherAppShell";
 
 /**
  * Simple gate: wait for stub auth to load, then send guests to login.
@@ -33,5 +34,5 @@ export function RequireTeacher({ children }: { children: React.ReactNode }) {
     );
   }
 
-  return <>{children}</>;
+  return <TeacherAppShell>{children}</TeacherAppShell>;
 }

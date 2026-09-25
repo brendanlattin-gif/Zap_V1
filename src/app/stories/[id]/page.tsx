@@ -158,7 +158,7 @@ function WorkspaceContent() {
 
   if (loadError) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center gap-4 p-6">
+      <main className="flex flex-1 flex-col items-center justify-center gap-4 p-6">
         <p className="font-body text-lg font-bold text-zap-red">{loadError}</p>
         <Link href="/dashboard" className="zap-btn zap-btn-primary">
           Back to dashboard
@@ -169,14 +169,14 @@ function WorkspaceContent() {
 
   if (!draft) {
     return (
-      <main className="flex min-h-screen items-center justify-center font-body text-lg">
+      <main className="flex flex-1 items-center justify-center font-body text-lg">
         Loading story…
       </main>
     );
   }
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-3xl flex-col p-4 sm:p-6">
+    <main className="mx-auto flex w-full max-w-3xl flex-col p-4 sm:p-6">
       <div className="zap-panel flex flex-1 flex-col gap-4 p-4 sm:p-6 animate-fade-up">
         <header className="flex flex-wrap items-center justify-between gap-3">
           <ZapLogo size="md" href="/dashboard" />

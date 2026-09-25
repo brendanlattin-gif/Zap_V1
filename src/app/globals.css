@@ -6,20 +6,22 @@
 */
 
 @theme {
-  --color-zap-sky: #7eb8d8;
-  --color-zap-sky-deep: #5a9bc4;
-  --color-zap-cream: #fdf8e1;
-  --color-zap-cream-deep: #f5edd0;
-  --color-zap-red: #e31c23;
-  --color-zap-red-deep: #b8141a;
-  --color-zap-peach: #f0b27a;
-  --color-zap-peach-soft: #f5c59a;
-  --color-zap-orange: #f0a04b;
-  --color-zap-ink: #1a1a1a;
-  --color-zap-muted: #4a4a4a;
-  --color-zap-dot-line: #a8d0e8;
-  --font-display: var(--font-figtree), "Figtree", system-ui, sans-serif;
-  --font-body: var(--font-roboto-serif), "Roboto Serif", Georgia, serif;
+  --color-zap-sky: #7eb8d8; /* page Ben Day background */
+  --color-zap-sky-deep: #5a9bc4; /* darker sky accent / hover tones */
+  --color-zap-cream: #fdf8e1; /* floating panels + site footer */
+  --color-zap-cream-deep: #f5edd0; /* cream hover / soft fills */
+  --color-zap-red: #e31c23; /* brand accent, headlines, emphasis */
+  --color-zap-red-deep: #b8141a; /* darker red accent */
+  --color-zap-peach: #f0b27a; /* peach accent */
+  --color-zap-peach-soft: #f5c59a; /* peach buttons / soft controls */
+  --color-zap-orange: #f0a04b; /* primary button fill */
+  --color-zap-ink: #1a1a1a; /* borders, primary body text */
+  --color-zap-muted: #4a4a4a; /* secondary text (greetings, hints) */
+  --color-zap-dot-line: #a8d0e8; /* Ben Day / decorative line tint */
+  --color-zap-red-deepest: #7a0c10; /* high-contrast primary button text */
+  --color-zap-royal: #1a2f6b; /* experimental alternate (unused) */
+  --font-display: var(--font-figtree), "Figtree", system-ui, sans-serif; /* headlines, buttons, short labels */
+  --font-body: var(--font-roboto-serif), "Roboto Serif", Georgia, serif; /* readable body / forms */
 }
 
 @layer base {
@@ -35,7 +37,9 @@
     background-color: var(--color-zap-sky);
     background-image: url("/assets/bendaydots.png");
     background-repeat: repeat;
-    background-size: 280px 280px;
+    background-size: 280px auto;
+    /* or: background-size: contain; — usually worse for tiles */
+    /* or match aspect: 280px 168px  (800:480 ≈ 5:3) */
   }
 
   /* Soft brand presence on first paint */
@@ -128,7 +132,7 @@
 
   .zap-btn-primary {
     background-color: var(--color-zap-orange);
-    color: var(--color-zap-red);
+    color: var(--color-zap-red-deepest); /* or var(--color-zap-royal) */
     padding: 0.7rem 1.4rem;
     font-size: 1.35rem;
   }
@@ -147,5 +151,11 @@
     font-weight: 800;
     text-decoration: underline;
     text-underline-offset: 3px;
+  }
+
+  .zap-site-footer {
+    background-color: var(--color-zap-cream);
+    border-top: 3px solid var(--color-zap-ink);
+    box-shadow: 0 -4px 14px rgb(0 0 0 / 0.1);
   }
 }

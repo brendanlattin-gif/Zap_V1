@@ -147,7 +147,7 @@ function WizardContent() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col gap-5 p-4 sm:p-6">
+    <main className="mx-auto flex w-full max-w-6xl flex-col gap-5 p-4 sm:p-6">
       <header className="zap-panel flex items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <BookMascot size="sm" />
         <h1 className="font-display text-2xl text-[#6b4a2e] sm:text-3xl">Story Starters</h1>
