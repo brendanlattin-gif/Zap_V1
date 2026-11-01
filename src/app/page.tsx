@@ -23,7 +23,7 @@ export default function LandingPage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center p-4 sm:p-8">
-      <div className="zap-panel-white relative flex min-h-[min(70vh,900px)] w-full max-w-5xl flex-col p-8 sm:p-12 animate-fade-up">
+      <div className="zap-panel-white relative flex min-h-0 min-[640px]:min-h-[min(70vh,900px)] w-full max-w-5xl flex-col p-8 sm:p-12 animate-fade-up">
         <header className="mb-6 flex items-start justify-between gap-4 sm:mb-10">
         <div className="inline-flex flex-col items-end">
         <div className="min-[520px]:hidden">
@@ -46,29 +46,29 @@ export default function LandingPage() {
           </nav>
         </header>
 
-        <div className="grid items-center gap-8 min-[640px]:grid-cols-[1.1fr_1fr]">
+        <div className="grid items-center gap-8 min-[640px]:grid-cols-[1fr_1.2fr] min-[780px]:grid-cols-[0.85fr_1.35fr]">
           <div className="flex justify-center">
-            <BookMascot size="lg" className="max-w-[160px] drop-shadow-md min-[520px]:max-w-[280px]" />
+            <BookMascot size="lg" className="max-w-[70%] drop-shadow-md min-[520px]:max-w-[280px]" />
           </div>
 
           <div className="flex flex-col items-start">
-          <h1 className="font-display text-4xl font-bold leading-tight text-zap-red min-[708px]:hidden">
+          <h1 className="font-display text-4xl font-bold leading-tight text-zap-red min-[780px]:hidden">
             Write a story!
           </h1>
-          <h1 className="hidden font-display text-4xl font-bold leading-tight text-zap-red min-[708px]:block sm:text-5xl">
+          <h1 className="hidden font-display text-4xl font-bold leading-tight text-zap-red min-[780px]:block sm:text-5xl">
             Let’s write a story!
           </h1>
           <div
             className="
               mt-4 flex w-full flex-col gap-4
-              min-[520px]:max-[639px]:flex-row
-              min-[520px]:max-[639px]:items-end
-              min-[520px]:max-[639px]:justify-between
+              min-[520px]:flex-row
+              min-[520px]:items-end
+              min-[520px]:justify-between
               min-[640px]:flex-col
               min-[640px]:items-stretch
             "
           >
-            <p className="min-w-0 flex-1 font-body text-lg font-bold leading-snug text-zap-ink sm:text-xl">
+            <p className="min-w-0 flex-1 max-w-md font-body text-lg font-bold leading-snug text-zap-ink sm:text-xl min-[780px]:max-w-none">
               Sign up for an account and get started on your story library.
             </p>
             <button

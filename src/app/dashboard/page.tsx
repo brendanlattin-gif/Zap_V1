@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BookMascot, ZapLogo } from "@/components/Brand";
@@ -21,7 +22,7 @@ function DashboardContent() {
   }, []);
 
   return (
-    <main className="mx-auto flex min-h-0 w-full max-w-5xl flex-1 flex-col gap-6 p-4 sm:p-8">
+    <main className="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col gap-6 overflow-y-auto p-4 pb-24 sm:p-8 sm:pb-28">
       <header className="zap-panel flex shrink-0 items-end justify-between gap-4 px-4 py-3 sm:px-6">
         <div className="flex items-end">
           <BookMascot size="sm" />
@@ -51,7 +52,18 @@ function DashboardContent() {
             New Story
           </Link>
         </div>
-        <h2 className="mt-3 shrink-0 font-display text-2xl text-zap-ink">
+        <div className="my-4 shrink-0 sm:my-5">
+          <Image
+            src="/assets/bookshelf.png"
+            alt=""
+            width={1600}
+            height={200}
+            sizes="(max-width: 1152px) 100vw, 1152px"
+            className="h-auto w-full object-contain"
+            priority
+          />
+        </div>
+        <h2 className="shrink-0 font-display text-2xl text-zap-ink">
           Saved drafts
         </h2>
         {!loaded && (
@@ -69,7 +81,7 @@ function DashboardContent() {
                 <li key={draft.id}>
                   <Link
                     href={`/stories/${draft.id}`}
-                    className="zap-panel-white flex aspect-[4/3] flex-col justify-between p-3 transition hover:bg-white"
+                    className="zap-panel-white flex aspect-[5/3] flex-col justify-between p-3 transition hover:bg-white"
                   >
                     <p className="font-display text-sm font-bold leading-snug text-zap-ink line-clamp-2">
                       {draft.title}

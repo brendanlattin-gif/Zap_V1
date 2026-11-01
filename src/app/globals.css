@@ -156,6 +156,8 @@
   .zap-site-footer {
     background-color: var(--color-zap-cream);
     border-top: 3px solid var(--color-zap-ink);
+    border-left: 3px solid var(--color-zap-ink);
+    border-right: 3px solid var(--color-zap-ink);
     box-shadow: 0 -4px 14px rgb(0 0 0 / 0.1);
   }
 }

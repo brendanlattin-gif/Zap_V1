@@ -5,11 +5,15 @@ import Link from "next/link";
 export function ZapLogo({
   size = "md",
   href = "/",
+  ariaLabel = "Zap! home",
 }: {
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "sm" | "md" | "lg" | "xl" | "2xl";
   href?: string | null;
+  /** Accessible name when the logo is a link (e.g. escape route). */
+  ariaLabel?: string;
 }) {
-  const dims = size === "xl" ? 210 : size === "lg" ? 120 : size === "sm" ? 64 : 96;
+  const dims =
+    size === "2xl" ? 280 : size === "xl" ? 210 : size === "lg" ? 120 : size === "sm" ? 64 : 96;
   const image = (
     <Image
       src="/brand/zaplogo-tiny.png"
@@ -23,7 +27,7 @@ export function ZapLogo({
 
   if (!href) return image;
   return (
-    <Link href={href} className="inline-block" aria-label="Zap! home">
+    <Link href={href} className="inline-block" aria-label={ariaLabel} title={ariaLabel}>
       {image}
     </Link>
   );

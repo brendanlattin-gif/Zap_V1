@@ -36,6 +36,8 @@ Authoritative for **what to build** and classroom product rules.
 | Doc | Description |
 |-----|-------------|
 | [mockups/README.md](design/mockups/README.md) | Index of Figma PNG mockups (landing, wizard, suggestion modals, workspace) |
+| [landing-responsive.md](design/landing-responsive.md) | Landing page breakpoints and layout patterns (novice-annotated) |
+| [story-starters-header.md](design/story-starters-header.md) | Story Starters wizard header breakpoints (mascot / title / Zap!) |
 
 ---
 
